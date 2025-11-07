@@ -7,16 +7,18 @@ using WeatherDashboardAPI.Services;
 
 var builder = WebApplication.CreateBuilder(args);
 
+// Add services to the container.
 builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 
-// Swagger Configuration with JWT
+// Swagger Configuration
 builder.Services.AddSwaggerGen(options =>
 {
     options.SwaggerDoc("v1", new OpenApiInfo
     {
         Title = "Weather Dashboard API",
         Version = "v1",
+        Description = "Hava Durumu Dashboard API"
     });
 
     options.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
@@ -51,12 +53,16 @@ builder.Services.AddDbContext<ApplicationDbContext>(options =>
 // AutoMapper
 builder.Services.AddAutoMapper(typeof(Program));
 
+// HttpClient
+builder.Services.AddHttpClient();
+
 // Repository & UnitOfWork
 builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
 
 // Services
 builder.Services.AddScoped<IAuthService, AuthService>();
 builder.Services.AddScoped<ICityService, CityService>();
+builder.Services.AddScoped<IWeatherService, WeatherService>();
 builder.Services.AddScoped<JwtHelper>();
 
 var app = builder.Build();
@@ -65,10 +71,7 @@ var app = builder.Build();
 if (app.Environment.IsDevelopment())
 {
     app.UseSwagger();
-    app.UseSwaggerUI(c =>
-    {
-        c.SwaggerEndpoint("/swagger/v1/swagger.json", "Weather Dashboard API v1");
-    });
+    app.UseSwaggerUI();
 }
 
 app.UseHttpsRedirection();
