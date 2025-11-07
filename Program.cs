@@ -2,6 +2,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.OpenApi.Models;
 using WeatherDashboardAPI.Data;
 using WeatherDashboardAPI.Helpers;
+using WeatherDashboardAPI.Repositories;
 using WeatherDashboardAPI.Services;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -50,8 +51,12 @@ builder.Services.AddDbContext<ApplicationDbContext>(options =>
 // AutoMapper
 builder.Services.AddAutoMapper(typeof(Program));
 
+// Repository & UnitOfWork
+builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
+
 // Services
 builder.Services.AddScoped<IAuthService, AuthService>();
+builder.Services.AddScoped<ICityService, CityService>();
 builder.Services.AddScoped<JwtHelper>();
 
 var app = builder.Build();
