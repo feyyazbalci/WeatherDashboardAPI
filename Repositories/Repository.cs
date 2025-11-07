@@ -73,5 +73,10 @@ namespace WeatherDashboardAPI.Repositories
         {
             return await _dbSet.CountAsync(predicate);
         }
+
+        public IQueryable<T> GetQueryable()
+        {
+            return _dbSet.AsQueryable();
+        }
     }
 }

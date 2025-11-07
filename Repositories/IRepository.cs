@@ -19,6 +19,7 @@ namespace WeatherDashboardAPI.Repositories
 
         Task<int> CountAsync();
         Task<int> CountAsync(Expression<Func<T, bool>> predicate);
+        IQueryable<T> GetQueryable();
     }
 
 }

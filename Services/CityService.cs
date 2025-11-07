@@ -25,7 +25,7 @@ namespace WeatherDashboardAPI.Services
             pageSize = pageSize < 1 ? 10 : pageSize > 100 ? 100 : pageSize;
 
             // Base query
-            var query = ((Repository<City>)_unitOfWork.Cities)._dbSet.AsQueryable();
+            var query = _unitOfWork.Cities.GetQueryable();
 
             // Search
             if (!string.IsNullOrWhiteSpace(search))
