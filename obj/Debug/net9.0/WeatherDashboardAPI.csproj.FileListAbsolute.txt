@@ -167,3 +167,4 @@
 /Users/feyyazbalci/Documents/projects/net-core/WeatherDashboardAPI/obj/Debug/net9.0/WeatherDashboardAPI.pdb
 /Users/feyyazbalci/Documents/projects/net-core/WeatherDashboardAPI/obj/Debug/net9.0/WeatherDashboardAPI.genruntimeconfig.cache
 /Users/feyyazbalci/Documents/projects/net-core/WeatherDashboardAPI/obj/Debug/net9.0/ref/WeatherDashboardAPI.dll
+/Users/feyyazbalci/Documents/projects/net-core/WeatherDashboardAPI/obj/Debug/net9.0/WeatherDashboardAPI.sourcelink.json
