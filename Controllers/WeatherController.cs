@@ -1,3 +1,4 @@
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using WeatherDashboardAPI.Services;
 
@@ -25,6 +26,7 @@ namespace WeatherDashboardAPI.Controllers
             return Ok(new { message, data = weather });
         }
 
+        [Authorize]
         [HttpPost("sync/{cityId}")]
         public async Task<IActionResult> SyncWeatherData(int cityId)
         {
@@ -36,6 +38,7 @@ namespace WeatherDashboardAPI.Controllers
             return Ok(new { message });
         }
 
+        [Authorize(Roles = "Admin")]
         [HttpPost("sync-all")]
         public async Task<IActionResult> SyncAllCitiesWeather()
         {

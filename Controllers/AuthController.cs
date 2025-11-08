@@ -1,3 +1,4 @@
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using WeatherDashboardAPI.DTOs.Auth;
 using WeatherDashboardAPI.Services;
@@ -51,28 +52,29 @@ namespace WeatherDashboardAPI.Controllers
             });
         }
 
+        [Authorize]
         [HttpGet("profile")]
         public async Task<IActionResult> GetProfile()
         {
-            var authHeader = Request.Headers["Authorization"].FirstOrDefault();
+            var userIdClaim = User.FindFirst(System.Security.Claims.ClaimTypes.NameIdentifier);
 
-            if (string.IsNullOrEmpty(authHeader))
-                return Unauthorized(new { message = "Token could not found." });
-
-            var token = authHeader.Replace("Bearer ", "");
-
-            var jwtHelper = HttpContext.RequestServices.GetRequiredService<Helpers.JwtHelper>();
-            var userId = jwtHelper.ValidateToken(token);
-
-            if (userId == null)
+            if (userIdClaim == null)
                 return Unauthorized(new { message = "Invalid token." });
 
-            var user = await _authService.GetUserByIdAsync(userId.Value);
+            var userId = int.Parse(userIdClaim.Value);
+            var user = await _authService.GetUserByIdAsync(userId);
 
             if (user == null)
                 return NotFound(new { message = "User not found." });
 
             return Ok(user);
+        }
+
+        [Authorize(Roles = "Admin")]
+        [HttpGet("admin-only")]
+        public IActionResult AdminOnly()
+        {
+            return Ok(new { message = "Only Admin users can access this endpoint!" });
         }
     }
 }

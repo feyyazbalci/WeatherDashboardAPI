@@ -1,3 +1,4 @@
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using WeatherDashboardAPI.DTOs.City;
 using WeatherDashboardAPI.Services;
@@ -50,6 +51,7 @@ namespace WeatherDashboardAPI.Controllers
             return Ok(city);
         }
 
+        [Authorize(Roles = "Admin")]
         [HttpPost]
         public async Task<IActionResult> CreateCity([FromBody] CreateCityDto dto)
         {
@@ -64,6 +66,7 @@ namespace WeatherDashboardAPI.Controllers
             return CreatedAtAction(nameof(GetCity), new { id = city!.Id }, new { message, data = city });
         }
 
+        [Authorize(Roles = "Admin")]
         [HttpPut("{id}")]
         public async Task<IActionResult> UpdateCity(int id, [FromBody] UpdateCityDto dto)
         {
@@ -78,6 +81,7 @@ namespace WeatherDashboardAPI.Controllers
             return Ok(new { message, data = city });
         }
 
+        [Authorize(Roles = "Admin")]
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteCity(int id)
         {
