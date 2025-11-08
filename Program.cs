@@ -92,6 +92,8 @@ builder.Services.AddScoped<ICityService, CityService>();
 builder.Services.AddScoped<IWeatherService, WeatherService>();
 builder.Services.AddScoped<JwtHelper>();
 
+builder.Services.AddHostedService<WeatherUpdateBackgroundService>();
+
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
