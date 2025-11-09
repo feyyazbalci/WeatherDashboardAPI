@@ -15,17 +15,28 @@ namespace WeatherDashboardAPI.Services
         private readonly IMapper _mapper;
         private readonly IHttpClientFactory _httpClientFactory;
         private readonly IConfiguration _configuration;
+        private readonly IRedisCacheService _cacheService;
+        private readonly ILogger<WeatherService> _logger;
+
+        private readonly TimeSpan _cacheExpiration;
 
         public WeatherService(
             IUnitOfWork unitOfWork,
             IMapper mapper,
             IHttpClientFactory httpClientFactory,
-            IConfiguration configuration)
+            IConfiguration configuration,
+            IRedisCacheService cacheService,
+            ILogger<WeatherService> logger)
         {
             _unitOfWork = unitOfWork;
             _mapper = mapper;
             _httpClientFactory = httpClientFactory;
             _configuration = configuration;
+            _cacheService = cacheService;
+            _logger = logger;
+
+            var cacheMinutes = _configuration.GetValue<int>("Cache:WeatherExpirationMinutes");
+            _cacheExpiration = TimeSpan.FromMinutes(cacheMinutes);
         }
 
         public async Task<(bool Success, string Message, CurrentWeatherDto? Weather)> GetCurrentWeatherAsync(int cityId)
@@ -33,6 +44,17 @@ namespace WeatherDashboardAPI.Services
             var city = await _unitOfWork.Cities.GetByIdAsync(cityId);
             if (city == null)
                 return (false, "City not found.", null);
+
+            var cacheKey = $"city:{cityId}:weather";
+            var cachedWeather = await _cacheService.GetAsync<CurrentWeatherDto>(cacheKey);
+
+            if (cachedWeather != null)
+            {
+                _logger.LogInformation("Cache HIT: {CacheKey}", cacheKey);
+                return (true, "Weather fetched from cache.", cachedWeather);
+            }
+
+            _logger.LogInformation("Cache MISS: {CacheKey}", cacheKey);
 
             var latestRecord = await _unitOfWork.WeatherRecords
                 .GetQueryable()
@@ -59,6 +81,10 @@ namespace WeatherDashboardAPI.Services
                 return (false, "Weather data could not be obtained.", null);
 
             var weatherDto = _mapper.Map<CurrentWeatherDto>(latestRecord);
+
+            await _cacheService.SetAsync(cacheKey, weatherDto, _cacheExpiration);
+            _logger.LogInformation("Cache SET: {CacheKey} (Expires in {Minutes} minutes)", 
+                cacheKey, _cacheExpiration.TotalMinutes);
             return (true, "Weather forecast successfully brought.", weatherDto);
         }
 
@@ -80,10 +106,21 @@ namespace WeatherDashboardAPI.Services
                 await _unitOfWork.WeatherRecords.AddAsync(weatherRecord);
                 await _unitOfWork.SaveChangesAsync();
 
+                _logger.LogInformation("Weather recorded in database: {CityName}", city.Name);
+
+                var cacheKey = $"city:{cityId}:weather";
+                var weatherDto = _mapper.Map<CurrentWeatherDto>(weatherRecord);
+                weatherDto.CityName = city.Name;
+                weatherDto.Country = city.Country;
+
+                await _cacheService.SetAsync(cacheKey, weatherDto, _cacheExpiration);
+                _logger.LogInformation("Cache updated: {CacheKey}", cacheKey);
+
                 return (true, "Weather data has been recorded successfully.");
             }
             catch (Exception ex)
             {
+                _logger.LogError(ex, "Error: {CityName} - {Message}", city.Name, ex.Message);
                 return (false, $"Error: {ex.Message}");
             }
         }

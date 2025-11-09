@@ -168,3 +168,5 @@
 /Users/feyyazbalci/Documents/projects/net-core/WeatherDashboardAPI/obj/Debug/net9.0/WeatherDashboardAPI.genruntimeconfig.cache
 /Users/feyyazbalci/Documents/projects/net-core/WeatherDashboardAPI/obj/Debug/net9.0/ref/WeatherDashboardAPI.dll
 /Users/feyyazbalci/Documents/projects/net-core/WeatherDashboardAPI/obj/Debug/net9.0/WeatherDashboardAPI.sourcelink.json
+/Users/feyyazbalci/Documents/projects/net-core/WeatherDashboardAPI/bin/Debug/net9.0/Pipelines.Sockets.Unofficial.dll
+/Users/feyyazbalci/Documents/projects/net-core/WeatherDashboardAPI/bin/Debug/net9.0/StackExchange.Redis.dll

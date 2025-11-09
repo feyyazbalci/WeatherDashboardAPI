@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
+using StackExchange.Redis;
 using WeatherDashboardAPI.Data;
 using WeatherDashboardAPI.Helpers;
 using WeatherDashboardAPI.Repositories;
@@ -59,6 +60,13 @@ builder.Services.AddAutoMapper(typeof(Program));
 // HttpClient
 builder.Services.AddHttpClient();
 
+var redisConfiguration = builder.Configuration["Redis:Configuration"];
+builder.Services.AddSingleton<IConnectionMultiplexer>(sp =>
+{
+    var configuration = ConfigurationOptions.Parse(redisConfiguration!, true);
+    return ConnectionMultiplexer.Connect(configuration);
+});
+
 var jwtSettings = builder.Configuration.GetSection("JwtSettings");
 var secretKey = jwtSettings["SecretKey"];
 
@@ -91,6 +99,8 @@ builder.Services.AddScoped<IAuthService, AuthService>();
 builder.Services.AddScoped<ICityService, CityService>();
 builder.Services.AddScoped<IWeatherService, WeatherService>();
 builder.Services.AddScoped<JwtHelper>();
+
+builder.Services.AddSingleton<IRedisCacheService, RedisCacheService>();
 
 builder.Services.AddHostedService<WeatherUpdateBackgroundService>();
 
