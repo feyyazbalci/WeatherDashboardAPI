@@ -1,0 +1,74 @@
+version: '3.8'
+
+services:
+  # .NET Core API
+  api:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: weather-api
+    ports:
+      - "5001:5000"
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+      - ASPNETCORE_URLS=http://+:5000
+      - ConnectionStrings__DefaultConnection=Host=postgres;Port=5432;Database=weatherdb;Username=postgres;Password=postgres123
+      - Redis__Configuration=redis:6379
+      - OpenWeatherMap__ApiKey=2bdafaf1b83419088cd3560b018b521e
+      - OpenWeatherMap__BaseUrl=https://api.openweathermap.org/data/2.5
+      - JwtSettings__SecretKey=BuCokGizliBirKeyOlmaliEnAz32KarakterUzunlugunda!
+      - JwtSettings__Issuer=WeatherDashboardAPI
+      - JwtSettings__Audience=WeatherDashboardClient
+      - JwtSettings__ExpirationMinutes=1440
+      - BackgroundService__UpdateIntervalMinutes=30
+      - BackgroundService__InitialDelaySeconds=10
+      - Cache__WeatherExpirationMinutes=30
+    depends_on:
+      - redis
+      - postgres
+    networks:
+      - weather-network
+
+  # PostgreSQL
+  postgres:
+    image: postgres:16-alpine
+    container_name: weather-postgres
+    ports:
+      - "5432:5432"
+    environment:
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=postgres123
+      - POSTGRES_DB=weatherdb
+    volumes:
+      - postgres-data:/var/lib/postgresql/data
+    networks:
+      - weather-network
+
+  # Redis
+  redis:
+    image: redis:alpine
+    container_name: weather-redis
+    ports:
+      - "6379:6379"
+    networks:
+      - weather-network
+    command: redis-server --appendonly yes
+    volumes:
+      - redis-data:/data
+
+  # Adminer (Database UI)
+  adminer:
+    image: adminer
+    container_name: weather-adminer
+    ports:
+      - "8080:8080"
+    networks:
+      - weather-network
+
+networks:
+  weather-network:
+    driver: bridge
+
+volumes:
+  postgres-data:
+  redis-data:

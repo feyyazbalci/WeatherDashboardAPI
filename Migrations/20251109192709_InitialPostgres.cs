@@ -1,5 +1,6 @@
 ﻿using System;
 using Microsoft.EntityFrameworkCore.Migrations;
+using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
 #nullable disable
 
@@ -8,7 +9,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace WeatherDashboardAPI.Migrations
 {
     /// <inheritdoc />
-    public partial class InitialCreate : Migration
+    public partial class InitialPostgres : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -17,15 +18,15 @@ namespace WeatherDashboardAPI.Migrations
                 name: "Cities",
                 columns: table => new
                 {
-                    Id = table.Column<int>(type: "INTEGER", nullable: false)
-                        .Annotation("Sqlite:Autoincrement", true),
-                    Name = table.Column<string>(type: "TEXT", maxLength: 100, nullable: false),
-                    Country = table.Column<string>(type: "TEXT", maxLength: 2, nullable: false),
-                    Latitude = table.Column<double>(type: "REAL", nullable: false),
-                    Longitude = table.Column<double>(type: "REAL", nullable: false),
-                    StateCode = table.Column<string>(type: "TEXT", nullable: true),
-                    OpenWeatherMapId = table.Column<int>(type: "INTEGER", nullable: true),
-                    CreatedAt = table.Column<DateTime>(type: "TEXT", nullable: false)
+                    Id = table.Column<int>(type: "integer", nullable: false)
+                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
+                    Name = table.Column<string>(type: "character varying(100)", maxLength: 100, nullable: false),
+                    Country = table.Column<string>(type: "character varying(2)", maxLength: 2, nullable: false),
+                    Latitude = table.Column<double>(type: "double precision", nullable: false),
+                    Longitude = table.Column<double>(type: "double precision", nullable: false),
+                    StateCode = table.Column<string>(type: "text", nullable: true),
+                    OpenWeatherMapId = table.Column<int>(type: "integer", nullable: true),
+                    CreatedAt = table.Column<DateTime>(type: "timestamp with time zone", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -36,13 +37,14 @@ namespace WeatherDashboardAPI.Migrations
                 name: "Users",
                 columns: table => new
                 {
-                    Id = table.Column<int>(type: "INTEGER", nullable: false)
-                        .Annotation("Sqlite:Autoincrement", true),
-                    Username = table.Column<string>(type: "TEXT", maxLength: 50, nullable: false),
-                    Email = table.Column<string>(type: "TEXT", maxLength: 100, nullable: false),
-                    PasswordHash = table.Column<string>(type: "TEXT", nullable: false),
-                    CreatedAt = table.Column<DateTime>(type: "TEXT", nullable: false),
-                    LastLoginAt = table.Column<DateTime>(type: "TEXT", nullable: true)
+                    Id = table.Column<int>(type: "integer", nullable: false)
+                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
+                    Username = table.Column<string>(type: "character varying(50)", maxLength: 50, nullable: false),
+                    Email = table.Column<string>(type: "character varying(100)", maxLength: 100, nullable: false),
+                    PasswordHash = table.Column<string>(type: "text", nullable: false),
+                    Role = table.Column<string>(type: "text", nullable: false),
+                    CreatedAt = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
+                    LastLoginAt = table.Column<DateTime>(type: "timestamp with time zone", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -53,15 +55,15 @@ namespace WeatherDashboardAPI.Migrations
                 name: "WeatherAlerts",
                 columns: table => new
                 {
-                    Id = table.Column<int>(type: "INTEGER", nullable: false)
-                        .Annotation("Sqlite:Autoincrement", true),
-                    CityId = table.Column<int>(type: "INTEGER", nullable: false),
-                    AlertType = table.Column<int>(type: "INTEGER", nullable: false),
-                    Message = table.Column<string>(type: "TEXT", nullable: false),
-                    Severity = table.Column<int>(type: "INTEGER", nullable: false),
-                    TriggerValue = table.Column<double>(type: "REAL", nullable: true),
-                    CreatedAt = table.Column<DateTime>(type: "TEXT", nullable: false),
-                    IsActive = table.Column<bool>(type: "INTEGER", nullable: false)
+                    Id = table.Column<int>(type: "integer", nullable: false)
+                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
+                    CityId = table.Column<int>(type: "integer", nullable: false),
+                    AlertType = table.Column<int>(type: "integer", nullable: false),
+                    Message = table.Column<string>(type: "text", nullable: false),
+                    Severity = table.Column<int>(type: "integer", nullable: false),
+                    TriggerValue = table.Column<double>(type: "double precision", nullable: true),
+                    CreatedAt = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
+                    IsActive = table.Column<bool>(type: "boolean", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -78,25 +80,25 @@ namespace WeatherDashboardAPI.Migrations
                 name: "WeatherRecords",
                 columns: table => new
                 {
-                    Id = table.Column<int>(type: "INTEGER", nullable: false)
-                        .Annotation("Sqlite:Autoincrement", true),
-                    CityId = table.Column<int>(type: "INTEGER", nullable: false),
-                    Temperature = table.Column<double>(type: "REAL", nullable: false),
-                    FeelsLike = table.Column<double>(type: "REAL", nullable: false),
-                    TempMin = table.Column<double>(type: "REAL", nullable: false),
-                    TempMax = table.Column<double>(type: "REAL", nullable: false),
-                    Humidity = table.Column<int>(type: "INTEGER", nullable: false),
-                    Pressure = table.Column<int>(type: "INTEGER", nullable: false),
-                    WindSpeed = table.Column<double>(type: "REAL", nullable: false),
-                    WindDegree = table.Column<int>(type: "INTEGER", nullable: true),
-                    Cloudiness = table.Column<int>(type: "INTEGER", nullable: true),
-                    Rainfall = table.Column<double>(type: "REAL", nullable: true),
-                    Snowfall = table.Column<double>(type: "REAL", nullable: true),
-                    WeatherMain = table.Column<string>(type: "TEXT", nullable: false),
-                    WeatherDescription = table.Column<string>(type: "TEXT", nullable: false),
-                    WeatherIcon = table.Column<string>(type: "TEXT", nullable: true),
-                    RecordedAt = table.Column<DateTime>(type: "TEXT", nullable: false),
-                    CreatedAt = table.Column<DateTime>(type: "TEXT", nullable: false)
+                    Id = table.Column<int>(type: "integer", nullable: false)
+                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
+                    CityId = table.Column<int>(type: "integer", nullable: false),
+                    Temperature = table.Column<double>(type: "double precision", nullable: false),
+                    FeelsLike = table.Column<double>(type: "double precision", nullable: false),
+                    TempMin = table.Column<double>(type: "double precision", nullable: false),
+                    TempMax = table.Column<double>(type: "double precision", nullable: false),
+                    Humidity = table.Column<int>(type: "integer", nullable: false),
+                    Pressure = table.Column<int>(type: "integer", nullable: false),
+                    WindSpeed = table.Column<double>(type: "double precision", nullable: false),
+                    WindDegree = table.Column<int>(type: "integer", nullable: true),
+                    Cloudiness = table.Column<int>(type: "integer", nullable: true),
+                    Rainfall = table.Column<double>(type: "double precision", nullable: true),
+                    Snowfall = table.Column<double>(type: "double precision", nullable: true),
+                    WeatherMain = table.Column<string>(type: "text", nullable: false),
+                    WeatherDescription = table.Column<string>(type: "text", nullable: false),
+                    WeatherIcon = table.Column<string>(type: "text", nullable: true),
+                    RecordedAt = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
+                    CreatedAt = table.Column<DateTime>(type: "timestamp with time zone", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -113,11 +115,11 @@ namespace WeatherDashboardAPI.Migrations
                 name: "UserFavoriteCities",
                 columns: table => new
                 {
-                    Id = table.Column<int>(type: "INTEGER", nullable: false)
-                        .Annotation("Sqlite:Autoincrement", true),
-                    UserId = table.Column<int>(type: "INTEGER", nullable: false),
-                    CityId = table.Column<int>(type: "INTEGER", nullable: false),
-                    AddedAt = table.Column<DateTime>(type: "TEXT", nullable: false)
+                    Id = table.Column<int>(type: "integer", nullable: false)
+                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
+                    UserId = table.Column<int>(type: "integer", nullable: false),
+                    CityId = table.Column<int>(type: "integer", nullable: false),
+                    AddedAt = table.Column<DateTime>(type: "timestamp with time zone", nullable: false)
                 },
                 constraints: table =>
                 {

@@ -46,9 +46,13 @@
 /Users/feyyazbalci/Documents/projects/net-core/WeatherDashboardAPI/bin/Debug/net9.0/Microsoft.IdentityModel.Tokens.dll
 /Users/feyyazbalci/Documents/projects/net-core/WeatherDashboardAPI/bin/Debug/net9.0/Microsoft.OpenApi.dll
 /Users/feyyazbalci/Documents/projects/net-core/WeatherDashboardAPI/bin/Debug/net9.0/Mono.TextTemplating.dll
+/Users/feyyazbalci/Documents/projects/net-core/WeatherDashboardAPI/bin/Debug/net9.0/Npgsql.dll
+/Users/feyyazbalci/Documents/projects/net-core/WeatherDashboardAPI/bin/Debug/net9.0/Npgsql.EntityFrameworkCore.PostgreSQL.dll
+/Users/feyyazbalci/Documents/projects/net-core/WeatherDashboardAPI/bin/Debug/net9.0/Pipelines.Sockets.Unofficial.dll
 /Users/feyyazbalci/Documents/projects/net-core/WeatherDashboardAPI/bin/Debug/net9.0/SQLitePCLRaw.batteries_v2.dll
 /Users/feyyazbalci/Documents/projects/net-core/WeatherDashboardAPI/bin/Debug/net9.0/SQLitePCLRaw.core.dll
 /Users/feyyazbalci/Documents/projects/net-core/WeatherDashboardAPI/bin/Debug/net9.0/SQLitePCLRaw.provider.e_sqlite3.dll
+/Users/feyyazbalci/Documents/projects/net-core/WeatherDashboardAPI/bin/Debug/net9.0/StackExchange.Redis.dll
 /Users/feyyazbalci/Documents/projects/net-core/WeatherDashboardAPI/bin/Debug/net9.0/Swashbuckle.AspNetCore.Swagger.dll
 /Users/feyyazbalci/Documents/projects/net-core/WeatherDashboardAPI/bin/Debug/net9.0/Swashbuckle.AspNetCore.SwaggerGen.dll
 /Users/feyyazbalci/Documents/projects/net-core/WeatherDashboardAPI/bin/Debug/net9.0/Swashbuckle.AspNetCore.SwaggerUI.dll
@@ -153,6 +157,7 @@
 /Users/feyyazbalci/Documents/projects/net-core/WeatherDashboardAPI/obj/Debug/net9.0/WeatherDashboardAPI.csproj.CoreCompileInputs.cache
 /Users/feyyazbalci/Documents/projects/net-core/WeatherDashboardAPI/obj/Debug/net9.0/WeatherDashboardAPI.MvcApplicationPartsAssemblyInfo.cs
 /Users/feyyazbalci/Documents/projects/net-core/WeatherDashboardAPI/obj/Debug/net9.0/WeatherDashboardAPI.MvcApplicationPartsAssemblyInfo.cache
+/Users/feyyazbalci/Documents/projects/net-core/WeatherDashboardAPI/obj/Debug/net9.0/WeatherDashboardAPI.sourcelink.json
 /Users/feyyazbalci/Documents/projects/net-core/WeatherDashboardAPI/obj/Debug/net9.0/rjimswa.dswa.cache.json
 /Users/feyyazbalci/Documents/projects/net-core/WeatherDashboardAPI/obj/Debug/net9.0/rjsmrazor.dswa.cache.json
 /Users/feyyazbalci/Documents/projects/net-core/WeatherDashboardAPI/obj/Debug/net9.0/rjsmcshtml.dswa.cache.json
@@ -167,6 +172,3 @@
 /Users/feyyazbalci/Documents/projects/net-core/WeatherDashboardAPI/obj/Debug/net9.0/WeatherDashboardAPI.pdb
 /Users/feyyazbalci/Documents/projects/net-core/WeatherDashboardAPI/obj/Debug/net9.0/WeatherDashboardAPI.genruntimeconfig.cache
 /Users/feyyazbalci/Documents/projects/net-core/WeatherDashboardAPI/obj/Debug/net9.0/ref/WeatherDashboardAPI.dll
-/Users/feyyazbalci/Documents/projects/net-core/WeatherDashboardAPI/obj/Debug/net9.0/WeatherDashboardAPI.sourcelink.json
-/Users/feyyazbalci/Documents/projects/net-core/WeatherDashboardAPI/bin/Debug/net9.0/Pipelines.Sockets.Unofficial.dll
-/Users/feyyazbalci/Documents/projects/net-core/WeatherDashboardAPI/bin/Debug/net9.0/StackExchange.Redis.dll
